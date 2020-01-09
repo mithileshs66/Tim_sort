@@ -1,0 +1,102 @@
+
+#include<iostream>
+using namespace std;
+const int run=32;
+
+void insertionsort(int arr[],int left,int n)
+{
+    for(int i=left+1;i<=n;i++)
+    {  int temp=arr[i];
+          int j=i-1;
+          while(j>=left && arr[j]>temp)
+          {
+              arr[j+1]=arr[j];
+              j--;
+          }
+     arr[j+1]=temp;
+    }
+    
+}
+
+void mergesort(int arr[],int p,int q,int t)
+{
+    int n1=q-p+1;
+    int n2=t-q;
+    
+    int l[n1];int r[n2];
+    
+    for(int i=0;i<n1;i++)
+    {
+       l[i]=arr[p+i]; 
+    }
+    for(int j=0;j<n2;j++)
+    {
+        r[j]=arr[q+j+1];
+    }
+    int i=0;
+    int j=0;
+   int  k=p;
+    while(i<n1 && j<n2)
+    {
+        if(l[i]<=r[j])
+        {
+            arr[k]=l[i];
+        }
+        else
+        {
+            arr[k]=r[j];
+        }
+        k++;
+    }
+    while(i<n1)
+    {
+        arr[k]=l[i];
+        k++;i++;
+    }
+    while(j<n2)
+    {
+     arr[k]=r[j];
+     k++;j++;
+    }
+    
+}
+
+void timsort(int arr[],int n)
+{
+    for(int i=0;i<n;i=i+run)
+    {
+        insertionsort(arr,i,min(i+31,(n-1)));
+    }
+    for(int size=run;size<n;size=2*size)
+    {  int mid,right;
+        for(int left=0;left<n;left=left+2*size)
+        {
+            mid=left+size-1;
+             right=min((left+2*size-1),(n-1));
+         
+           mergesort(arr,left,mid,right);   
+        }
+      
+    }
+}
+
+int main()
+{
+    int n;
+    // cout<<"Enter the size\n";
+    // cin>>n;
+    int arr[]={2,5,1,7,4,9,4};
+    // cout<<"Enter the array\n";
+    // for(int i=0;i<n;i++)
+    // {
+    //     cin>>arr[i];
+    // }
+   
+    timsort(arr,7);
+    cout<<"Sorted Array\n";
+    for(int i=0;i<7;i++)
+    {
+        cout<<arr[i];
+    }
+    
+}
